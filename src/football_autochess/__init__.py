@@ -16,6 +16,7 @@ from .models import (
     PlayType,
     Player,
     Position,
+    SimulationTuning,
     Team,
 )
 from .pbp_pipeline import (
@@ -43,6 +44,7 @@ __all__ = [
     "PlayType",
     "Player",
     "Position",
+    "SimulationTuning",
     "SparseLogisticModel",
     "Team",
     "ValidationReport",

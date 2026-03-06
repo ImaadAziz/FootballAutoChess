@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -9,7 +11,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from football_autochess import GameState, ModelBundle, simulate_many_drives  # noqa: E402
+from football_autochess import GameState, ModelBundle, SimulationTuning, simulate_many_drives  # noqa: E402
 from sample_teams import build_defense, build_offense  # noqa: E402
 
 
@@ -17,15 +19,31 @@ def _pct(value: float) -> str:
     return f"{value * 100:.2f}%"
 
 
+def _load_calibration(path: str | None) -> tuple[dict[str, float], dict[str, float], SimulationTuning | None]:
+    if not path:
+        return {}, {}, None
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    offense_tendencies = dict(payload.get("offense_tendencies", {}))
+    defense_tendencies = dict(payload.get("defense_tendencies", {}))
+    tuning = SimulationTuning.from_dict(payload.get("tuning"))
+    return offense_tendencies, defense_tendencies, tuning
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run bulk drive benchmark")
     parser.add_argument("--drives", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=12345)
     parser.add_argument("--model-bundle", default=None)
+    parser.add_argument("--calibration", default=None, help="Optional calibration_result.json")
     args = parser.parse_args()
 
     offense = build_offense()
     defense = build_defense()
+    offense_patch, defense_patch, tuning = _load_calibration(args.calibration)
+    if offense_patch:
+        offense = replace(offense, tendencies={**offense.tendencies, **offense_patch})
+    if defense_patch:
+        defense = replace(defense, tendencies={**defense.tendencies, **defense_patch})
 
     base_state = GameState(
         possession_team_id=offense.id,
@@ -46,12 +64,15 @@ def main() -> None:
         rng_seed=args.seed,
         max_plays=20,
         model_bundle=model_bundle,
+        tuning=tuning,
     )
 
     print(f"=== {args.drives}-Drive Benchmark ===")
     print(f"Seed: {batch.seed}")
     print(f"Drives: {batch.num_drives}")
     print(f"Total plays: {batch.total_plays}")
+    if args.calibration:
+        print(f"Calibration: {Path(args.calibration).resolve()}")
     print("")
 
     print("Outcomes:")

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, Mapping
 
 
 class Position(str, Enum):
@@ -49,6 +49,12 @@ class OffensivePlay:
     target_depth: float
     route_concepts: tuple[str, ...] = ()
     protection_call: str = "base"
+    shotgun: bool = False
+    no_huddle: bool = False
+    play_action: bool = False
+    pass_location: str = ""
+    run_gap: str = ""
+    run_location: str = ""
 
 
 @dataclass(frozen=True)
@@ -91,6 +97,9 @@ class GameState:
     offense_score: int = 0
     defense_score: int = 0
     drive_number: int = 1
+    season: int = 2025
+    week: int = 10
+    season_type: str = "REG"
 
 
 @dataclass(frozen=True)
@@ -132,3 +141,45 @@ class BatchSimulationResult:
     outcome_counts: dict[str, int]
     raw_counts: dict[str, int]
     metrics: dict[str, float]
+
+
+@dataclass(frozen=True)
+class SimulationTuning:
+    playcall_model_weight: float = 0.4
+    event_model_weight: float = 0.75
+    pass_rate_bias: float = 0.0
+    completion_logit_bias: float = 0.0
+    sack_logit_bias: float = 0.0
+    interception_logit_bias: float = 0.0
+    rush_success_logit_bias: float = 0.0
+    explosive_logit_bias: float = 0.0
+    fumble_logit_bias: float = 0.0
+
+    def to_dict(self) -> dict[str, float]:
+        return {
+            "playcall_model_weight": self.playcall_model_weight,
+            "event_model_weight": self.event_model_weight,
+            "pass_rate_bias": self.pass_rate_bias,
+            "completion_logit_bias": self.completion_logit_bias,
+            "sack_logit_bias": self.sack_logit_bias,
+            "interception_logit_bias": self.interception_logit_bias,
+            "rush_success_logit_bias": self.rush_success_logit_bias,
+            "explosive_logit_bias": self.explosive_logit_bias,
+            "fumble_logit_bias": self.fumble_logit_bias,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, object] | None) -> SimulationTuning:
+        if not payload:
+            return cls()
+        return cls(
+            playcall_model_weight=float(payload.get("playcall_model_weight", 0.4)),
+            event_model_weight=float(payload.get("event_model_weight", 0.75)),
+            pass_rate_bias=float(payload.get("pass_rate_bias", 0.0)),
+            completion_logit_bias=float(payload.get("completion_logit_bias", 0.0)),
+            sack_logit_bias=float(payload.get("sack_logit_bias", 0.0)),
+            interception_logit_bias=float(payload.get("interception_logit_bias", 0.0)),
+            rush_success_logit_bias=float(payload.get("rush_success_logit_bias", 0.0)),
+            explosive_logit_bias=float(payload.get("explosive_logit_bias", 0.0)),
+            fumble_logit_bias=float(payload.get("fumble_logit_bias", 0.0)),
+        )

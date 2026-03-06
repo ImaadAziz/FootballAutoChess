@@ -4,7 +4,7 @@ import random
 from dataclasses import dataclass, replace
 from typing import Mapping
 
-from .models import BatchSimulationResult, GameState, Team
+from .models import BatchSimulationResult, GameState, SimulationTuning, Team
 from .simulation import simulate_many_drives
 
 
@@ -12,7 +12,8 @@ from .simulation import simulate_many_drives
 class CalibrationConfig:
     iterations: int = 40
     drives_per_iteration: int = 300
-    step_size: float = 0.08
+    team_step_size: float = 0.08
+    tuning_step_size: float = 0.18
     seed: int | None = None
 
 
@@ -20,6 +21,7 @@ class CalibrationConfig:
 class CalibrationResult:
     offense_team: Team
     defense_team: Team
+    tuning: SimulationTuning
     best_metrics: dict[str, float]
     best_loss: float
     history: tuple[dict[str, float], ...]
@@ -41,7 +43,7 @@ def _objective(metrics: Mapping[str, float], targets: Mapping[str, float]) -> fl
     return loss
 
 
-def _mutate_tendencies(
+def _mutate_team_tendencies(
     offense_team: Team,
     defense_team: Team,
     rng: random.Random,
@@ -61,18 +63,34 @@ def _mutate_tendencies(
 
     for key, (low, high) in offense_bounds.items():
         base = float(offense.get(key, (low + high) / 2.0))
-        delta = rng.uniform(-step_size, step_size)
-        offense[key] = _clamp(base + delta, low, high)
+        offense[key] = _clamp(base + rng.uniform(-step_size, step_size), low, high)
 
     for key, (low, high) in defense_bounds.items():
         base = float(defense.get(key, (low + high) / 2.0))
-        delta = rng.uniform(-step_size, step_size)
-        defense[key] = _clamp(base + delta, low, high)
+        defense[key] = _clamp(base + rng.uniform(-step_size, step_size), low, high)
 
-    return (
-        replace(offense_team, tendencies=offense),
-        replace(defense_team, tendencies=defense),
-    )
+    return replace(offense_team, tendencies=offense), replace(defense_team, tendencies=defense)
+
+
+def _mutate_tuning(tuning: SimulationTuning, rng: random.Random, step_size: float) -> SimulationTuning:
+    values = tuning.to_dict()
+    bounds = {
+        "playcall_model_weight": (0.0, 1.0),
+        "event_model_weight": (0.0, 1.0),
+        "pass_rate_bias": (-0.35, 0.35),
+        "completion_logit_bias": (-1.0, 1.0),
+        "sack_logit_bias": (-1.0, 1.0),
+        "interception_logit_bias": (-1.5, 0.5),
+        "rush_success_logit_bias": (-1.0, 1.0),
+        "explosive_logit_bias": (-0.8, 0.8),
+        "fumble_logit_bias": (-1.5, 0.4),
+    }
+
+    for key, (low, high) in bounds.items():
+        base = float(values[key])
+        values[key] = _clamp(base + rng.uniform(-step_size, step_size), low, high)
+
+    return SimulationTuning.from_dict(values)
 
 
 def calibrate_simulation_tendencies(
@@ -82,11 +100,14 @@ def calibrate_simulation_tendencies(
     targets: Mapping[str, float],
     config: CalibrationConfig | None = None,
     model_bundle_path: str | None = None,
+    initial_tuning: SimulationTuning | None = None,
 ) -> CalibrationResult:
     """
-    Random-search calibration over team tendency knobs against target metrics.
+    Random-search calibration over team identity plus league-level probability tuning.
 
-    Targets can include any metric returned by `simulate_many_drives(...).metrics`.
+    Team tendencies shape style. Simulation tuning shapes league-wide event calibration.
+    That separation is more stable for an auto-chess project than trying to solve both with
+    roster knobs alone.
     """
 
     from .ml_models import ModelBundle
@@ -95,6 +116,7 @@ def calibrate_simulation_tendencies(
     rng = random.Random(calibration.seed)
 
     model_bundle = ModelBundle.load_json(model_bundle_path) if model_bundle_path else None
+    best_tuning = initial_tuning or SimulationTuning()
 
     baseline = simulate_many_drives(
         game_state,
@@ -103,6 +125,7 @@ def calibrate_simulation_tendencies(
         num_drives=calibration.drives_per_iteration,
         rng_seed=rng.randint(0, 2_147_483_647),
         model_bundle=model_bundle,
+        tuning=best_tuning,
     )
     best_loss = _objective(baseline.metrics, targets)
     best_offense = offense_team
@@ -117,12 +140,13 @@ def calibrate_simulation_tendencies(
     ]
 
     for iteration in range(1, calibration.iterations + 1):
-        cand_offense, cand_defense = _mutate_tendencies(
+        cand_offense, cand_defense = _mutate_team_tendencies(
             best_offense,
             best_defense,
             rng,
-            calibration.step_size,
+            calibration.team_step_size,
         )
+        cand_tuning = _mutate_tuning(best_tuning, rng, calibration.tuning_step_size)
 
         batch: BatchSimulationResult = simulate_many_drives(
             game_state,
@@ -131,6 +155,7 @@ def calibrate_simulation_tendencies(
             num_drives=calibration.drives_per_iteration,
             rng_seed=rng.randint(0, 2_147_483_647),
             model_bundle=model_bundle,
+            tuning=cand_tuning,
         )
 
         loss = _objective(batch.metrics, targets)
@@ -138,6 +163,7 @@ def calibrate_simulation_tendencies(
             best_loss = loss
             best_offense = cand_offense
             best_defense = cand_defense
+            best_tuning = cand_tuning
             best_metrics = dict(batch.metrics)
 
         history.append(
@@ -151,6 +177,7 @@ def calibrate_simulation_tendencies(
     return CalibrationResult(
         offense_team=best_offense,
         defense_team=best_defense,
+        tuning=best_tuning,
         best_metrics=best_metrics,
         best_loss=best_loss,
         history=tuple(history),

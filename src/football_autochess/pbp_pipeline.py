@@ -18,8 +18,14 @@ EVENT_NAMES: tuple[str, ...] = (
     "fumble",
 )
 
+_OPTIONAL_NUMERIC_PREFIXES: tuple[str, ...] = (
+    "rating_",
+    "talent_",
+    "ml_",
+)
 
-def _to_float(raw: str | None, default: float = 0.0) -> float:
+
+def _to_float(raw: object | None, default: float = 0.0) -> float:
     if raw is None:
         return default
     text = str(raw).strip()
@@ -33,11 +39,11 @@ def _to_float(raw: str | None, default: float = 0.0) -> float:
         return default
 
 
-def _to_int(raw: str | None, default: int = 0) -> int:
+def _to_int(raw: object | None, default: int = 0) -> int:
     return int(round(_to_float(raw, float(default))))
 
 
-def _to_bool(raw: str | None) -> bool:
+def _to_bool(raw: object | None) -> bool:
     return _to_int(raw, 0) == 1
 
 
@@ -70,45 +76,155 @@ def _iter_rows(path: Path, max_rows: int | None = None) -> Iterable[dict[str, ob
             yield row
 
 
+def _add_bucket_feature(features: FeatureVector, name: str, bucket: str) -> None:
+    features[f"cat:{name}={bucket}"] = 1.0
+
+
+def _normalize_optional_numeric(key: str, value: float) -> float:
+    if key.startswith(("rating_", "talent_")):
+        return max(-1.0, min(1.0, value / 100.0))
+    if key.startswith("ml_"):
+        return max(-5.0, min(5.0, value))
+    return value
+
+
+def _add_optional_numeric_features(row: dict[str, object], features: FeatureVector) -> None:
+    for key, raw_value in row.items():
+        if not isinstance(key, str):
+            continue
+        if not key.startswith(_OPTIONAL_NUMERIC_PREFIXES):
+            continue
+        value = _to_float(raw_value, default=float("nan"))
+        if value != value:
+            continue
+        features[f"num:{key}"] = _normalize_optional_numeric(key, value)
+
+
+def _game_clock_features(row: dict[str, object]) -> tuple[float, float, float]:
+    game_seconds_remaining = max(0.0, min(3600.0, _to_float(row.get("game_seconds_remaining"), 1800.0)))
+    half_seconds_remaining = _to_float(row.get("half_seconds_remaining"), -1.0)
+    if half_seconds_remaining < 0.0:
+        half_seconds_remaining = game_seconds_remaining % 1800.0
+    half_seconds_remaining = max(0.0, min(1800.0, half_seconds_remaining))
+    quarter_seconds_remaining = _to_float(row.get("quarter_seconds_remaining"), -1.0)
+    if quarter_seconds_remaining < 0.0:
+        quarter_seconds_remaining = game_seconds_remaining % 900.0
+    quarter_seconds_remaining = max(0.0, min(900.0, quarter_seconds_remaining))
+    return game_seconds_remaining, half_seconds_remaining, quarter_seconds_remaining
+
+
+def _distance_bucket(distance: float) -> str:
+    if distance <= 2.0:
+        return "very_short"
+    if distance <= 4.0:
+        return "short"
+    if distance <= 7.0:
+        return "medium"
+    if distance <= 10.0:
+        return "long"
+    return "very_long"
+
+
+def _field_zone(yardline_100: float) -> str:
+    if yardline_100 <= 10.0:
+        return "goal_to_go"
+    if yardline_100 <= 20.0:
+        return "red_zone"
+    if yardline_100 <= 40.0:
+        return "scoring_range"
+    if yardline_100 <= 60.0:
+        return "midfield"
+    if yardline_100 <= 80.0:
+        return "own_territory"
+    return "backed_up"
+
+
+def _score_state(score_diff: float) -> str:
+    if score_diff <= -10.0:
+        return "trailing_big"
+    if score_diff < -3.0:
+        return "trailing"
+    if score_diff <= 3.0:
+        return "neutral"
+    if score_diff < 10.0:
+        return "leading"
+    return "leading_big"
+
+
+def _pass_depth_bucket(air_yards: float) -> str:
+    if air_yards < 0.0:
+        return "behind_los"
+    if air_yards <= 7.0:
+        return "short"
+    if air_yards <= 15.0:
+        return "intermediate"
+    return "deep"
+
+
 def _base_features(row: dict[str, object]) -> FeatureVector:
     down = max(1, min(4, _to_int(row.get("down"), 1)))
     distance = max(1.0, min(25.0, _to_float(row.get("ydstogo"), 10.0)))
     yardline_100 = max(1.0, min(99.0, _to_float(row.get("yardline_100"), 50.0)))
     qtr = max(1, min(5, _to_int(row.get("qtr"), 1)))
+    season = max(1999, min(2035, _to_int(row.get("season"), 2024)))
+    week = max(1, min(25, _to_int(row.get("week"), 1)))
 
     score_diff = _to_float(row.get("score_differential"), 0.0)
-    game_seconds_remaining = max(0.0, min(3600.0, _to_float(row.get("game_seconds_remaining"), 1800.0)))
+    game_seconds_remaining, half_seconds_remaining, quarter_seconds_remaining = _game_clock_features(row)
 
     features: FeatureVector = {
         "num:down_norm": down / 4.0,
         "num:distance_norm": distance / 25.0,
         "num:yardline_norm": yardline_100 / 100.0,
         "num:quarter_norm": qtr / 5.0,
+        "num:season_norm": (season - 1999) / 40.0,
+        "num:week_norm": week / 25.0,
         "num:score_diff_norm": max(-28.0, min(28.0, score_diff)) / 28.0,
         "num:game_clock_norm": game_seconds_remaining / 3600.0,
+        "num:half_clock_norm": half_seconds_remaining / 1800.0,
+        "num:quarter_clock_norm": quarter_seconds_remaining / 900.0,
         "num:goal_to_go": 1.0 if _to_bool(row.get("goal_to_go")) else 0.0,
         "num:shotgun": 1.0 if _to_bool(row.get("shotgun")) else 0.0,
         "num:no_huddle": 1.0 if _to_bool(row.get("no_huddle")) else 0.0,
+        "num:play_action": 1.0 if _to_bool(row.get("play_action")) else 0.0,
+        "num:red_zone": 1.0 if yardline_100 <= 20.0 else 0.0,
+        "num:fringe_red_zone": 1.0 if yardline_100 <= 30.0 else 0.0,
+        "num:backed_up": 1.0 if yardline_100 >= 85.0 else 0.0,
+        "num:late_game": 1.0 if game_seconds_remaining <= 600.0 else 0.0,
+        "num:two_minute": 1.0 if half_seconds_remaining <= 120.0 else 0.0,
     }
+
+    _add_bucket_feature(features, "down", str(down))
+    _add_bucket_feature(features, "distance", _distance_bucket(distance))
+    _add_bucket_feature(features, "field_zone", _field_zone(yardline_100))
+    _add_bucket_feature(features, "score_state", _score_state(score_diff))
+    _add_bucket_feature(features, "quarter", str(qtr))
 
     season_type = str(row.get("season_type", "") or "")
     if season_type:
-        features[f"cat:season_type={season_type}"] = 1.0
+        _add_bucket_feature(features, "season_type", season_type)
 
     roof = str(row.get("roof", "") or "")
     if roof:
-        features[f"cat:roof={roof}"] = 1.0
+        _add_bucket_feature(features, "roof", roof)
 
+    _add_optional_numeric_features(row, features)
     return features
 
 
 def _pass_features(row: dict[str, object], base: FeatureVector) -> FeatureVector:
     features = dict(base)
     air_yards = max(-5.0, min(40.0, _to_float(row.get("air_yards"), 8.0)))
-    features["num:target_depth_norm"] = (air_yards + 5.0) / 45.0
-
     rushers = max(3.0, min(7.0, _to_float(row.get("number_of_pass_rushers"), 4.0)))
+
+    features["num:target_depth_norm"] = (air_yards + 5.0) / 45.0
     features["num:rushers_norm"] = rushers / 7.0
+    features["num:depth_behind_los"] = 1.0 if air_yards < 0.0 else 0.0
+    _add_bucket_feature(features, "pass_depth", _pass_depth_bucket(air_yards))
+
+    pass_location = str(row.get("pass_location", "") or "")
+    if pass_location:
+        _add_bucket_feature(features, "pass_location", pass_location)
 
     return features
 
@@ -120,7 +236,11 @@ def _run_features(row: dict[str, object], base: FeatureVector) -> FeatureVector:
 
     run_gap = str(row.get("run_gap", "") or "")
     if run_gap:
-        features[f"cat:run_gap={run_gap}"] = 1.0
+        _add_bucket_feature(features, "run_gap", run_gap)
+
+    run_location = str(row.get("run_location", "") or "")
+    if run_location:
+        _add_bucket_feature(features, "run_location", run_location)
 
     return features
 
@@ -148,6 +268,8 @@ def build_training_examples_from_pbp(
     Build event-specific training sets and pass/run play-call examples from local nflverse PBP data.
 
     Supported inputs: `.csv`, `.csv.gz`, and `.parquet` with nflverse-style columns.
+    Optional future talent features are picked up automatically when row keys use
+    `rating_`, `talent_`, or `ml_` prefixes.
     """
 
     path = Path(pbp_csv_path)
@@ -181,11 +303,10 @@ def build_training_examples_from_pbp(
 
         base = _base_features(row)
 
-        if is_pass or is_run:
-            if len(playcall_examples) < max_samples_per_event:
-                features = dict(base)
-                features["num:is_goal_to_go"] = base["num:goal_to_go"]
-                playcall_examples.append((features, int(is_pass)))
+        if len(playcall_examples) < max_samples_per_event:
+            playcall_features = dict(base)
+            playcall_features["num:is_goal_to_go"] = base["num:goal_to_go"]
+            playcall_examples.append((playcall_features, int(is_pass)))
 
         if is_pass:
             stats["pass_rows"] += 1

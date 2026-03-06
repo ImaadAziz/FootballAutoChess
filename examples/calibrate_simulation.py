@@ -13,6 +13,7 @@ if str(SRC) not in sys.path:
 from football_autochess import (  # noqa: E402
     CalibrationConfig,
     GameState,
+    SimulationTuning,
     calibrate_simulation_tendencies,
     load_target_metrics,
 )
@@ -20,11 +21,12 @@ from sample_teams import build_defense, build_offense  # noqa: E402
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Calibrate team tendency knobs to target metrics")
+    parser = argparse.ArgumentParser(description="Calibrate team tendencies and league-level sim tuning to target metrics")
     parser.add_argument("--targets", default="data/target_metrics.json", help="Target metrics JSON")
     parser.add_argument("--iterations", type=int, default=40)
     parser.add_argument("--drives", type=int, default=300, help="Drives per calibration iteration")
-    parser.add_argument("--step", type=float, default=0.08, help="Mutation step size")
+    parser.add_argument("--team-step", type=float, default=0.08, help="Mutation size for offense/defense tendencies")
+    parser.add_argument("--tuning-step", type=float, default=0.18, help="Mutation size for league tuning biases and model weights")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--model-bundle", default=None, help="Optional trained model bundle JSON")
     parser.add_argument("--output", default="artifacts/calibration_result.json", help="Calibration output JSON")
@@ -32,7 +34,6 @@ def main() -> None:
 
     offense = build_offense()
     defense = build_defense()
-
     state = GameState(
         possession_team_id=offense.id,
         down=1,
@@ -46,7 +47,8 @@ def main() -> None:
     config = CalibrationConfig(
         iterations=args.iterations,
         drives_per_iteration=args.drives,
-        step_size=args.step,
+        team_step_size=args.team_step,
+        tuning_step_size=args.tuning_step,
         seed=args.seed,
     )
 
@@ -57,6 +59,7 @@ def main() -> None:
         targets,
         config=config,
         model_bundle_path=args.model_bundle,
+        initial_tuning=SimulationTuning(),
     )
 
     output_payload = {
@@ -64,6 +67,7 @@ def main() -> None:
         "best_metrics": result.best_metrics,
         "offense_tendencies": result.offense_team.tendencies,
         "defense_tendencies": result.defense_team.tendencies,
+        "tuning": result.tuning.to_dict(),
         "history": list(result.history),
     }
 
@@ -73,6 +77,8 @@ def main() -> None:
 
     print(f"Calibration complete. Loss={result.best_loss:.6f}")
     print(json.dumps(result.best_metrics, indent=2))
+    print("\nTuning:")
+    print(json.dumps(result.tuning.to_dict(), indent=2))
     print(f"\nSaved: {output_path.resolve()}")
 
 
