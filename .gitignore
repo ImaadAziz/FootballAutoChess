@@ -1,0 +1,78 @@
+# Python cache and virtualenvs
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.python-version
+.venv/
+venv/
+env/
+ENV/
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+site/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Editors and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Local environment files
+.env
+.env.*
+*.local
+
+# Project-generated outputs
+artifacts/*
+!artifacts/.gitkeep
+
+data/*.parquet
+data/*.feather
+data/*.arrow
+data/*.csv.gz
+data/pbp_*.csv
+data/pbp_*.parquet
+data/pbp_*.csv.gz
+data/*targets*.json
+!data/target_metrics.template.json
+
+# Common model/checkpoint formats
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.joblib
+*.pkl
+*.pickle
+*.bin
+*.safetensors
+*.h5
+*.keras
+

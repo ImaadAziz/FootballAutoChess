@@ -1,0 +1,9 @@
+{
+  "yards_per_play": 5.215957738748628,
+  "completion_rate": 0.5367656973347117,
+  "sack_rate_per_pass_play": 0.06166569284012765,
+  "interception_rate_per_pass_play": 0.018225538226437143,
+  "fumble_rate_per_run_play": 0.00658868296807836,
+  "run_rate": 0.3894346871569704,
+  "explosive_play_rate": 0.08597694840834248
+}

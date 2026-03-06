@@ -1,0 +1,11 @@
+season_type,roof,down,ydstogo,yardline_100,qtr,score_differential,game_seconds_remaining,goal_to_go,shotgun,no_huddle,pass,qb_dropback,rush,sack,complete_pass,interception,fumble_lost,yards_gained,air_yards,number_of_pass_rushers,defenders_in_box,run_gap,qb_kneel,qb_spike
+REG,outdoors,1,10,75,1,0,3500,0,1,0,1,1,0,0,1,0,0,12,10,4,6,,0,0
+REG,outdoors,2,8,63,1,0,3460,0,1,0,1,1,0,0,0,0,0,0,8,4,6,,0,0
+REG,outdoors,3,8,63,1,0,3440,0,0,0,0,0,1,0,0,0,0,6,,4,7,guard,0,0
+REG,outdoors,1,10,57,1,7,3380,0,1,0,1,1,0,1,0,0,0,-7,0,5,6,,0,0
+REG,outdoors,2,17,64,1,7,3350,0,0,0,0,0,1,0,0,0,0,4,,4,7,tackle,0,0
+REG,outdoors,3,13,60,1,7,3320,0,1,0,1,1,0,0,1,0,0,18,16,4,6,,0,0
+REG,outdoors,1,10,42,2,3,2500,0,1,0,1,1,0,0,0,1,0,0,7,5,6,,0,0
+REG,outdoors,2,10,42,2,3,2470,0,0,0,0,0,1,0,0,0,1,3,,4,8,guard,0,0
+REG,outdoors,1,10,25,3,-3,1200,0,1,0,1,1,0,0,1,0,0,25,20,4,6,,0,0
+REG,outdoors,1,10,75,4,-10,300,0,0,1,0,0,1,0,0,0,0,11,,4,7,edge,0,0
