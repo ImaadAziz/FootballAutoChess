@@ -4,7 +4,7 @@ import math
 import random
 from collections import Counter
 from dataclasses import dataclass, replace
-from typing import Sequence, TypeVar
+from typing import Callable, Sequence, TypeVar
 
 from .ml_models import ModelBundle
 from .models import (
@@ -31,6 +31,7 @@ class _OffenseTendencySnapshot:
 
 
 T = TypeVar("T")
+StateAdvancer = Callable[[GameState, int, bool, bool, str, str, int], tuple[GameState, bool]]
 
 
 def _avg_rating(players: tuple, key: str, default: float = 50.0) -> float:
@@ -217,6 +218,70 @@ def _pass_depth_bucket(target_depth: float) -> str:
     if target_depth <= 15.0:
         return "intermediate"
     return "deep"
+
+
+_MAN_BEATER_CONCEPTS = frozenset({"drag", "go", "post", "slant"})
+_ZONE_BEATER_CONCEPTS = frozenset({"curl", "dig", "flat", "out", "sail", "stick"})
+
+
+def _route_concept_coverage_adjustment(
+    offensive_play: OffensivePlay,
+    defensive_play: DefensivePlay,
+) -> tuple[float, str | None]:
+    concepts = {concept.lower() for concept in offensive_play.route_concepts}
+    if not concepts:
+        return 0.0, None
+
+    if defensive_play.coverage_type == CoverageType.MAN:
+        if concepts & _MAN_BEATER_CONCEPTS:
+            return 1.8, "Route concept stresses man coverage"
+        if concepts & _ZONE_BEATER_CONCEPTS:
+            return -2.1, "Corners squeeze the called concept in man"
+        return 0.0, None
+
+    if defensive_play.coverage_type == CoverageType.ZONE:
+        if concepts & _ZONE_BEATER_CONCEPTS:
+            return 1.4, "Receivers find space in the zone shell"
+        if concepts & _MAN_BEATER_CONCEPTS:
+            return -2.6, "Zone defenders cap the route stems"
+        return 0.0, None
+
+    if concepts & _MAN_BEATER_CONCEPTS:
+        return 0.7, "Receivers stress the disguised leverage"
+    if concepts & _ZONE_BEATER_CONCEPTS:
+        return 0.7, "Spacing concept tests the rotation"
+    return 0.0, None
+
+
+def _run_front_adjustment(
+    offensive_play: OffensivePlay,
+    defensive_play: DefensivePlay,
+) -> tuple[float, str | None]:
+    front = defensive_play.front.lower()
+
+    if offensive_play.run_location == "middle":
+        if "bear" in front:
+            return 8.0, "Bear front crowds the interior gaps"
+        if defensive_play.rushers >= 5:
+            return 3.6, "Extra hats collapse the interior lane"
+        return 0.0, None
+
+    if offensive_play.run_location in {"left", "right"}:
+        if "bear" in front:
+            return -2.4, "Bear front leaves the edge softer than the middle"
+        if defensive_play.rushers <= 4 and defensive_play.coverage_type == CoverageType.ZONE:
+            return -1.6, "Light support widens the edge fit"
+        return 0.0, None
+
+    return 0.0, None
+
+
+def _repeat_count(
+    recent_results: Sequence[PlayResult],
+    predicate: Callable[[PlayResult], bool],
+    lookback: int = 3,
+) -> int:
+    return sum(1 for result in recent_results[-lookback:] if predicate(result))
 
 
 def _yardline_to_goal(game_state: GameState) -> float:
@@ -633,6 +698,7 @@ def _resolve_pass_play(
     offense_team: Team,
     defense_team: Team,
     rng: random.Random,
+    recent_results: Sequence[PlayResult],
     model_bundle: ModelBundle | None,
     tuning: SimulationTuning | None,
 ) -> dict[str, float | bool | int | str | list[str]]:
@@ -651,7 +717,8 @@ def _resolve_pass_play(
     pressure_defense += max(0, defensive_play.rushers - 4) * 2.3
 
     pressure_prob = 1.0 - _contest_probability(protection_offense, pressure_defense, rng)
-    under_pressure = rng.random() < pressure_prob
+    under_pressure_roll = rng.random()
+    under_pressure = under_pressure_roll < pressure_prob
 
     separation_offense = (
         0.55 * _avg_rating_with_fallback(receivers, "route_running", default=55.0)
@@ -665,14 +732,49 @@ def _resolve_pass_play(
     )
 
     if defensive_play.coverage_type == CoverageType.MAN:
-        coverage_defense += _avg_rating_with_fallback(coverage_players, "man_coverage", default=55.0) * 0.06
+        coverage_defense += _avg_rating_with_fallback(coverage_players, "man_coverage", default=55.0) * 0.09
     elif defensive_play.coverage_type == CoverageType.ZONE:
-        coverage_defense += _avg_rating_with_fallback(coverage_players, "zone_coverage", default=55.0) * 0.06
+        coverage_defense += _avg_rating_with_fallback(coverage_players, "zone_coverage", default=55.0) * 0.09
 
     if offensive_play.target_depth >= 15 and defensive_play.coverage_type == CoverageType.ZONE:
-        coverage_defense += 2.0
+        coverage_defense += 4.0
     if offensive_play.target_depth <= 7 and defensive_play.coverage_type == CoverageType.MAN:
-        coverage_defense += 1.5
+        coverage_defense += 2.2
+
+    concept_adjustment, concept_note = _route_concept_coverage_adjustment(offensive_play, defensive_play)
+    if concept_adjustment >= 0.0:
+        separation_offense += concept_adjustment
+    else:
+        coverage_defense += abs(concept_adjustment)
+
+    same_play_repeats = _repeat_count(recent_results, lambda result: result.offensive_play.id == offensive_play.id)
+    same_depth_repeats = _repeat_count(
+        recent_results,
+        lambda result: result.offensive_play.play_type == PlayType.PASS
+        and _pass_depth_bucket(result.offensive_play.target_depth) == _pass_depth_bucket(offensive_play.target_depth),
+    )
+    same_location_repeats = _repeat_count(
+        recent_results,
+        lambda result: result.offensive_play.play_type == PlayType.PASS and result.offensive_play.pass_location == offensive_play.pass_location,
+    )
+    same_type_repeats = _repeat_count(recent_results, lambda result: result.offensive_play.play_type == PlayType.PASS)
+    deep_pass_repeats = _repeat_count(
+        recent_results,
+        lambda result: result.offensive_play.play_type == PlayType.PASS and result.offensive_play.target_depth >= 15,
+    )
+
+    anti_spam_penalty = (
+        (same_play_repeats * 2.8)
+        + (same_depth_repeats * 1.35)
+        + (same_location_repeats * 0.75)
+        + (max(0, same_type_repeats - 1) * 0.45)
+    )
+    if offensive_play.target_depth >= 15:
+        anti_spam_penalty += deep_pass_repeats * 1.1
+
+    if anti_spam_penalty > 0.0:
+        coverage_defense += anti_spam_penalty
+        pressure_defense += (same_play_repeats * 0.8) + (max(0, same_type_repeats - 1) * 0.35)
 
     separation_prob = _contest_probability(separation_offense, coverage_defense, rng)
 
@@ -746,6 +848,10 @@ def _resolve_pass_play(
     )
 
     events = ["Pocket under pressure" if under_pressure else "Pocket mostly clean"]
+    if concept_note:
+        events.append(concept_note)
+    if anti_spam_penalty >= 1.0:
+        events.append("Defense jumps the repeated passing tendency")
     complete = False
     sack = False
     interception = False
@@ -758,19 +864,31 @@ def _resolve_pass_play(
     explosive_shift = 0.0
     rating_explosive_prob = 0.0
 
-    if rng.random() < sack_prob:
+    sack_roll = rng.random()
+    interception_roll = -1.0
+    completion_roll = -1.0
+    explosive_roll = -1.0
+    air_yards = 0
+    yac = 0
+    explosive_bonus = 0
+    pressure_penalty = 0
+
+    if sack_roll < sack_prob:
         sack = True
         yards_gained = -rng.randint(4, 10)
         events.append("QB is sacked")
         play_seconds = rng.randint(24, 38)
     else:
-        if rng.random() < interception_prob:
+        interception_roll = rng.random()
+        if interception_roll < interception_prob:
             interception = True
             turnover = True
             yards_gained = 0
             events.append("Pass intercepted")
             play_seconds = rng.randint(8, 14)
-        elif rng.random() < completion_prob:
+        else:
+            completion_roll = rng.random()
+        if not interception and completion_roll >= 0.0 and completion_roll < completion_prob:
             complete = True
             pressure_penalty = 3 if under_pressure else 0
             air_yards = max(1, int(round(offensive_play.target_depth - pressure_penalty + rng.gauss(0, 2.8))))
@@ -792,14 +910,15 @@ def _resolve_pass_play(
                 max_logit_shift=1.0,
             )
 
-            if rng.random() < explosive_prob:
-                bonus = rng.randint(6, 18)
-                yards_gained += bonus
-                events.append(f"Explosive after-catch burst (+{bonus})")
+            explosive_roll = rng.random()
+            if explosive_roll < explosive_prob:
+                explosive_bonus = rng.randint(6, 18)
+                yards_gained += explosive_bonus
+                events.append(f"Explosive after-catch burst (+{explosive_bonus})")
 
             events.append(f"Pass complete for {yards_gained} yards")
             play_seconds = rng.randint(24, 38)
-        else:
+        elif not interception:
             yards_gained = 0
             events.append("Pass incomplete")
             play_seconds = rng.randint(6, 12)
@@ -814,6 +933,15 @@ def _resolve_pass_play(
         else "Incompletion"
     )
 
+    snap_sack_prob = sack_prob
+    snap_interception_prob = (1.0 - sack_prob) * interception_prob
+    snap_completion_prob = (1.0 - sack_prob) * (1.0 - interception_prob) * completion_prob
+    snap_explosive_prob = snap_completion_prob * explosive_prob
+    snap_incompletion_prob = max(
+        0.0,
+        (1.0 - sack_prob) * (1.0 - interception_prob) * (1.0 - completion_prob),
+    )
+
     return {
         "complete": complete,
         "sack": sack,
@@ -825,27 +953,53 @@ def _resolve_pass_play(
         "summary": summary,
         "events": events,
         "pressure_prob": round(pressure_prob, 4),
+        "protection_offense_score": round(protection_offense, 4),
+        "pressure_defense_score": round(pressure_defense, 4),
+        "under_pressure_roll": round(under_pressure_roll, 4),
         "separation_prob": round(separation_prob, 4),
+        "separation_offense_score": round(separation_offense, 4),
+        "coverage_defense_score": round(coverage_defense, 4),
+        "qb_accuracy_score": round(qb_accuracy, 4),
+        "qb_decision_score": round(qb_decision, 4),
+        "concept_adjustment": round(concept_adjustment, 4),
+        "snap_sack_prob": round(snap_sack_prob, 4),
+        "snap_interception_prob": round(snap_interception_prob, 4),
+        "snap_completion_prob": round(snap_completion_prob, 4),
+        "snap_incompletion_prob": round(snap_incompletion_prob, 4),
+        "snap_explosive_prob": round(snap_explosive_prob, 4),
         "completion_prob": round(completion_prob, 4),
         "completion_model_prob": round(completion_model_prob, 4),
         "completion_baseline_prob": round(completion_baseline_prob, 4),
         "completion_rating_prob": round(rating_completion_prob, 4),
         "completion_rating_shift": round(completion_shift, 4),
+        "completion_roll": round(completion_roll, 4),
         "sack_prob": round(sack_prob, 4),
         "sack_model_prob": round(sack_model_prob, 4),
         "sack_baseline_prob": round(sack_baseline_prob, 4),
         "sack_rating_prob": round(rating_sack_prob, 4),
         "sack_rating_shift": round(sack_shift, 4),
+        "sack_roll": round(sack_roll, 4),
         "interception_prob": round(interception_prob, 4),
         "interception_model_prob": round(interception_model_prob, 4),
         "interception_baseline_prob": round(interception_baseline_prob, 4),
         "interception_rating_prob": round(rating_interception_prob, 4),
         "interception_rating_shift": round(interception_shift, 4),
+        "interception_roll": round(interception_roll, 4),
         "explosive_prob": round(explosive_prob, 4),
         "explosive_model_prob": round(explosive_model_prob, 4),
         "explosive_baseline_prob": round(explosive_baseline_prob, 4),
         "explosive_rating_prob": round(rating_explosive_prob, 4),
         "explosive_rating_shift": round(explosive_shift, 4),
+        "explosive_roll": round(explosive_roll, 4),
+        "air_yards": float(air_yards),
+        "yac": float(yac),
+        "explosive_bonus": float(explosive_bonus),
+        "pressure_penalty": float(pressure_penalty),
+        "same_play_repeats": float(same_play_repeats),
+        "same_depth_repeats": float(same_depth_repeats),
+        "same_location_repeats": float(same_location_repeats),
+        "same_type_repeats": float(same_type_repeats),
+        "anti_spam_penalty": round(anti_spam_penalty, 4),
     }
 def _resolve_run_play(
     game_state: GameState,
@@ -854,6 +1008,7 @@ def _resolve_run_play(
     offense_team: Team,
     defense_team: Team,
     rng: random.Random,
+    recent_results: Sequence[PlayResult],
     model_bundle: ModelBundle | None,
     tuning: SimulationTuning | None,
 ) -> dict[str, float | bool | int | str | list[str]]:
@@ -873,7 +1028,28 @@ def _resolve_run_play(
         + 0.25 * _avg_rating_with_fallback(front_seven, "run_fit", fallback_key="play_recognition", default=58.0)
         + 0.2 * _avg_rating_with_fallback(second_level, "tackling", default=65.0)
     )
-    run_defense += max(0, defensive_play.rushers - 4) * 1.8
+    run_defense += max(0, defensive_play.rushers - 4) * 2.4
+    front_adjustment, front_note = _run_front_adjustment(offensive_play, defensive_play)
+    run_defense += front_adjustment
+
+    same_play_repeats = _repeat_count(recent_results, lambda result: result.offensive_play.id == offensive_play.id)
+    same_lane_repeats = _repeat_count(
+        recent_results,
+        lambda result: result.offensive_play.play_type == PlayType.RUN and result.offensive_play.run_location == offensive_play.run_location,
+    )
+    same_gap_repeats = _repeat_count(
+        recent_results,
+        lambda result: result.offensive_play.play_type == PlayType.RUN and result.offensive_play.run_gap == offensive_play.run_gap,
+    )
+    same_type_repeats = _repeat_count(recent_results, lambda result: result.offensive_play.play_type == PlayType.RUN)
+    anti_spam_penalty = (
+        (same_play_repeats * 3.2)
+        + (same_lane_repeats * 1.8)
+        + (same_gap_repeats * 1.15)
+        + (max(0, same_type_repeats - 1) * 0.55)
+    )
+    if anti_spam_penalty > 0.0:
+        run_defense += anti_spam_penalty
 
     line_win_prob = _contest_probability(run_block, run_defense, rng)
     rb_skill = (
@@ -899,15 +1075,20 @@ def _resolve_run_play(
         event_logit_bias=tuning_values.rush_success_logit_bias,
     )
 
-    line_won = rng.random() < rush_success_prob
+    pursuit_tackling_score = (0.55 * pursuit) + (0.45 * tackling)
+    rush_success_roll = rng.random()
+    line_won = rush_success_roll < rush_success_prob
     if line_won:
         base = int(round(2.2 + rng.gauss(2.8, 2.0)))
     else:
         base = int(round(rng.gauss(0.6, 2.1))) - 1
 
     extra = 0
-    if rng.random() < evade_prob:
-        extra += rng.randint(1, 6)
+    evade_roll = rng.random()
+    evade_bonus = 0
+    if evade_roll < evade_prob:
+        evade_bonus = rng.randint(1, 6)
+        extra += evade_bonus
 
     rating_explosive_prob = _clamp((rb.rating("speed", 65.0) - pursuit) / 140.0 + 0.07 * line_win_prob, 0.008, 0.18)
     explosive_advantage = ((0.6 * rb.rating("speed", 65.0)) + (0.4 * rb.rating("elusiveness", 65.0))) - ((0.6 * pursuit) + (0.4 * tackling))
@@ -924,9 +1105,14 @@ def _resolve_run_play(
     )
 
     explosive = False
-    if line_won and rng.random() < explosive_prob:
+    explosive_roll = -1.0
+    explosive_bonus = 0
+    if line_won:
+        explosive_roll = rng.random()
+    if line_won and explosive_roll >= 0.0 and explosive_roll < explosive_prob:
         explosive = True
-        extra += rng.randint(10, 28)
+        explosive_bonus = rng.randint(10, 28)
+        extra += explosive_bonus
 
     yards_gained = max(-4, base + extra)
 
@@ -945,9 +1131,14 @@ def _resolve_run_play(
         max_logit_shift=0.75,
     )
 
-    fumble = rng.random() < fumble_prob
+    fumble_roll = rng.random()
+    fumble = fumble_roll < fumble_prob
     turnover = fumble
     events = ["Run lane opens" if line_won else "Run lane closes quickly"]
+    if front_note:
+        events.insert(0, front_note)
+    if anti_spam_penalty >= 1.0:
+        events.append("Defense keys on the repeated run look")
     if explosive:
         events.append("Explosive run lane found")
 
@@ -971,44 +1162,82 @@ def _resolve_run_play(
         "summary": summary,
         "events": events,
         "line_win_prob": round(line_win_prob, 4),
+        "run_block_score": round(run_block, 4),
+        "run_defense_score": round(run_defense, 4),
+        "front_adjustment": round(front_adjustment, 4),
+        "rb_skill_score": round(rb_skill, 4),
+        "pursuit_tackling_score": round(pursuit_tackling_score, 4),
+        "snap_rush_success_prob": round(rush_success_prob, 4),
+        "snap_evade_prob": round(evade_prob, 4),
+        "snap_explosive_prob": round(rush_success_prob * explosive_prob, 4),
+        "snap_fumble_prob": round(fumble_prob, 4),
         "rush_success_prob": round(rush_success_prob, 4),
         "rush_success_model_prob": round(rush_success_model_prob, 4),
         "rush_success_baseline_prob": round(rush_success_baseline_prob, 4),
         "rush_success_rating_prob": round(rating_rush_success_prob, 4),
         "rush_success_rating_shift": round(rush_success_shift, 4),
+        "rush_success_roll": round(rush_success_roll, 4),
         "evade_prob": round(evade_prob, 4),
+        "evade_roll": round(evade_roll, 4),
+        "base_yards": float(base),
+        "evade_bonus": float(evade_bonus),
         "explosive_prob": round(explosive_prob, 4),
         "explosive_model_prob": round(explosive_model_prob, 4),
         "explosive_baseline_prob": round(explosive_baseline_prob, 4),
         "explosive_rating_prob": round(rating_explosive_prob, 4),
         "explosive_rating_shift": round(explosive_shift, 4),
+        "explosive_roll": round(explosive_roll, 4),
+        "explosive_bonus": float(explosive_bonus),
         "fumble_prob": round(fumble_prob, 4),
         "fumble_model_prob": round(fumble_model_prob, 4),
         "fumble_baseline_prob": round(fumble_baseline_prob, 4),
         "fumble_rating_prob": round(rating_fumble_prob, 4),
         "fumble_rating_shift": round(fumble_shift, 4),
+        "fumble_roll": round(fumble_roll, 4),
+        "same_play_repeats": float(same_play_repeats),
+        "same_lane_repeats": float(same_lane_repeats),
+        "same_gap_repeats": float(same_gap_repeats),
+        "same_type_repeats": float(same_type_repeats),
+        "anti_spam_penalty": round(anti_spam_penalty, 4),
     }
-def _simulate_down_with_rng(
+
+
+def _simulate_selected_play_with_rng(
     game_state: GameState,
     offense_team: Team,
     defense_team: Team,
+    offensive_play: OffensivePlay,
+    defensive_play: DefensivePlay,
     rng: random.Random,
     recent_results: Sequence[PlayResult],
     model_bundle: ModelBundle | None,
     tuning: SimulationTuning | None,
+    state_advancer: StateAdvancer,
 ) -> PlayResult:
-    if not offense_team.offensive_playbook:
-        raise ValueError(f"{offense_team.name} has no offensive plays")
-    if not defense_team.defensive_playbook:
-        raise ValueError(f"{defense_team.name} has no defensive plays")
-
-    offensive_play = _select_offensive_play(game_state, offense_team, recent_results, rng, model_bundle, tuning)
-    defensive_play = _select_defensive_play(game_state, defense_team, recent_results, rng)
-
     if offensive_play.play_type == PlayType.RUN:
-        outcome = _resolve_run_play(game_state, offensive_play, defensive_play, offense_team, defense_team, rng, model_bundle, tuning)
+        outcome = _resolve_run_play(
+            game_state,
+            offensive_play,
+            defensive_play,
+            offense_team,
+            defense_team,
+            rng,
+            recent_results,
+            model_bundle,
+            tuning,
+        )
     else:
-        outcome = _resolve_pass_play(game_state, offensive_play, defensive_play, offense_team, defense_team, rng, model_bundle, tuning)
+        outcome = _resolve_pass_play(
+            game_state,
+            offensive_play,
+            defensive_play,
+            offense_team,
+            defense_team,
+            rng,
+            recent_results,
+            model_bundle,
+            tuning,
+        )
 
     events: list[str] = [
         f"Offense call: {offensive_play.name}",
@@ -1019,7 +1248,7 @@ def _simulate_down_with_rng(
     yards_gained = int(outcome["yards_gained"])
     turnover = bool(outcome["turnover"])
 
-    next_state, first_down = _advance_state(
+    next_state, first_down = state_advancer(
         game_state,
         yards_gained,
         turnover=turnover,
@@ -1046,7 +1275,8 @@ def _simulate_down_with_rng(
     for key, value in outcome.items():
         if key in {"events", "summary", "play_seconds", "yards_gained", "complete", "sack", "interception", "fumble", "turnover"}:
             continue
-        debug[key] = float(value)
+        if isinstance(value, (int, float)):
+            debug[key] = float(value)
 
     return PlayResult(
         offensive_play=offensive_play,
@@ -1063,6 +1293,36 @@ def _simulate_down_with_rng(
         next_state=next_state,
         events=tuple(events),
         debug=debug,
+    )
+
+
+def _simulate_down_with_rng(
+    game_state: GameState,
+    offense_team: Team,
+    defense_team: Team,
+    rng: random.Random,
+    recent_results: Sequence[PlayResult],
+    model_bundle: ModelBundle | None,
+    tuning: SimulationTuning | None,
+) -> PlayResult:
+    if not offense_team.offensive_playbook:
+        raise ValueError(f"{offense_team.name} has no offensive plays")
+    if not defense_team.defensive_playbook:
+        raise ValueError(f"{defense_team.name} has no defensive plays")
+
+    offensive_play = _select_offensive_play(game_state, offense_team, recent_results, rng, model_bundle, tuning)
+    defensive_play = _select_defensive_play(game_state, defense_team, recent_results, rng)
+    return _simulate_selected_play_with_rng(
+        game_state,
+        offense_team,
+        defense_team,
+        offensive_play,
+        defensive_play,
+        rng,
+        recent_results,
+        model_bundle,
+        tuning,
+        _advance_state,
     )
 def simulate_down(
     game_state: GameState,
@@ -1083,6 +1343,44 @@ def simulate_down(
     rng = random.Random(rng_seed)
     history = tuple(recent_results or ())
     return _simulate_down_with_rng(game_state, offense_team, defense_team, rng, history, model_bundle, tuning)
+
+
+def simulate_called_play(
+    game_state: GameState,
+    offense_team: Team,
+    defense_team: Team,
+    offensive_play: OffensivePlay,
+    defensive_play: DefensivePlay | None = None,
+    rng_seed: int | None = None,
+    recent_results: Sequence[PlayResult] | None = None,
+    model_bundle: ModelBundle | None = None,
+    tuning: SimulationTuning | None = None,
+    state_advancer: StateAdvancer | None = None,
+) -> PlayResult:
+    """Simulate one play with an explicitly chosen offensive call."""
+
+    if not defense_team.defensive_playbook:
+        raise ValueError(f"{defense_team.name} has no defensive plays")
+
+    rng = random.Random(rng_seed)
+    history = tuple(recent_results or ())
+    selected_defense = defensive_play or _select_defensive_play(game_state, defense_team, history, rng)
+    advancer = state_advancer or _advance_state
+
+    return _simulate_selected_play_with_rng(
+        game_state,
+        offense_team,
+        defense_team,
+        offensive_play,
+        selected_defense,
+        rng,
+        history,
+        model_bundle,
+        tuning,
+        advancer,
+    )
+
+
 def simulate_drive(
     game_state: GameState,
     offense_team: Team,

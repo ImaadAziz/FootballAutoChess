@@ -19,13 +19,25 @@ from .models import (
     SimulationTuning,
     Team,
 )
+from .rounds import (
+    RoundConfig,
+    RoundDefenseIdentity,
+    RoundResult,
+    RoundSnapResult,
+    build_round_start_state,
+    describe_defensive_look,
+    find_offensive_play,
+    select_round_defensive_play,
+    simulate_round,
+    simulate_round_play,
+)
 from .pbp_pipeline import (
     build_training_examples_from_pbp,
     compute_target_metrics_from_pbp,
     load_target_metrics,
     save_target_metrics,
 )
-from .simulation import simulate_down, simulate_drive, simulate_many_drives
+from .simulation import simulate_called_play, simulate_down, simulate_drive, simulate_many_drives
 from .validation import MetricComparison, ValidationReport, compare_metrics_to_targets
 
 __all__ = [
@@ -44,18 +56,29 @@ __all__ = [
     "PlayType",
     "Player",
     "Position",
+    "RoundConfig",
+    "RoundDefenseIdentity",
+    "RoundResult",
+    "RoundSnapResult",
     "SimulationTuning",
     "SparseLogisticModel",
     "Team",
     "ValidationReport",
     "basic_classification_metrics",
+    "build_round_start_state",
     "build_training_examples_from_pbp",
     "calibrate_simulation_tendencies",
     "compare_metrics_to_targets",
     "compute_target_metrics_from_pbp",
     "load_target_metrics",
     "save_target_metrics",
+    "describe_defensive_look",
+    "find_offensive_play",
+    "select_round_defensive_play",
+    "simulate_called_play",
     "simulate_down",
     "simulate_drive",
     "simulate_many_drives",
+    "simulate_round",
+    "simulate_round_play",
 ]
