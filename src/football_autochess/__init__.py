@@ -37,6 +37,7 @@ from .pbp_pipeline import (
     load_target_metrics,
     save_target_metrics,
 )
+from .replay import RoundReplay, build_round_replay, save_round_replay, validate_round_replay
 from .simulation import simulate_called_play, simulate_down, simulate_drive, simulate_many_drives
 from .validation import MetricComparison, ValidationReport, compare_metrics_to_targets
 
@@ -58,6 +59,7 @@ __all__ = [
     "Position",
     "RoundConfig",
     "RoundDefenseIdentity",
+    "RoundReplay",
     "RoundResult",
     "RoundSnapResult",
     "SimulationTuning",
@@ -72,6 +74,9 @@ __all__ = [
     "compute_target_metrics_from_pbp",
     "load_target_metrics",
     "save_target_metrics",
+    "build_round_replay",
+    "save_round_replay",
+    "validate_round_replay",
     "describe_defensive_look",
     "find_offensive_play",
     "select_round_defensive_play",

@@ -1,0 +1,7 @@
+res://replays/prototype_round_run_wall_zone.json
+res://scripts/CameraDirector.gd
+res://scripts/FieldScene.gd
+res://scripts/HUD.gd
+res://scripts/PlayerPiece.gd
+res://scripts/ReplayController.gd
+res://scripts/SnapDirector.gd

@@ -16,6 +16,14 @@ python examples/run_text_drive.py
 python examples/run_many_drives.py --drives 1000 --seed 12345
 ```
 
+## Export a 2D replay
+```powershell
+python examples/export_round_replay.py --defense-identity run-wall-zone --output apps/godot_client/replays/prototype_round_run_wall_zone.json
+python examples/export_round_replay.py --defense-identity light-box-zone --output apps/godot_client/replays/prototype_round_light_box_zone.json
+```
+
+Open `apps/godot_client/project.godot` in Godot 4 to play the exported round in the top-down replay client.
+
 ## Load real PBP with nflreadpy
 ```powershell
 pip install nflreadpy

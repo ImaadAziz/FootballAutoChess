@@ -1,0 +1,3733 @@
+{
+  "meta": {
+    "version": 1,
+    "seed": 23,
+    "round_name": "Prototype Round 1",
+    "target_yards": 40,
+    "play_budget": 6,
+    "outcome": "PLAY_BUDGET_EXHAUSTED",
+    "plays_used": 6
+  },
+  "teams": {
+    "offense": {
+      "id": "PP",
+      "name": "Precision Pass",
+      "side": "offense",
+      "palette_tokens": {
+        "primary": "#204E78",
+        "secondary": "#E0F2FE",
+        "accent": "#F6AE2D",
+        "outline": "#0B132B"
+      }
+    },
+    "defense": {
+      "id": "LBZ",
+      "name": "Light Box Zone",
+      "side": "defense",
+      "palette_tokens": {
+        "primary": "#355070",
+        "secondary": "#F7F7FF",
+        "accent": "#B56576",
+        "outline": "#1D1E2C"
+      }
+    }
+  },
+  "field": {
+    "length": 100.0,
+    "width": 53.3,
+    "line_of_scrimmage": 60.0,
+    "end_zone_direction": "right"
+  },
+  "snaps": [
+    {
+      "index": 0,
+      "pre_snap": {
+        "down": 1,
+        "distance": 40,
+        "yard_line": 60,
+        "plays_left": 6,
+        "line_of_scrimmage": 60.0,
+        "offensive_call": "Inside Zone",
+        "defensive_call": "Palms",
+        "tell_text": "Light box; front stays even before the snap; safeties split high over a zone shell",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Run",
+        "yards_gained": 7,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "inside_run_success",
+        "next_down": 2,
+        "next_distance": 33,
+        "next_yard_line": 67
+      },
+      "beats": [
+        {
+          "id": "inside_run_success_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "inside_run_success_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "inside_run_success_resolve",
+          "kind": "inside_run_success",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        },
+        {
+          "id": "inside_run_success_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 55.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 52.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 59.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 59.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 59.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 59.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 59.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 61.1,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 61.1,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 65.0,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 64.6,
+            "y": 37.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 76.0,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 55.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 55.8,
+              "y": 26.65
+            },
+            {
+              "x": 53.699999999999996,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 61.1,
+              "y": 21.0
+            },
+            {
+              "x": 54.699999999999996,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 61.1,
+              "y": 32.8
+            },
+            {
+              "x": 54.699999999999996,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_handoff",
+          "actor_id": "ball",
+          "kind": "handoff",
+          "points": [
+            {
+              "x": 53.699999999999996,
+              "y": 26.65
+            },
+            {
+              "x": 54.1,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 0.35,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "rb_pp_1_run",
+          "actor_id": "rb_pp_1",
+          "kind": "run_lane",
+          "points": [
+            {
+              "x": 52.7,
+              "y": 26.65
+            },
+            {
+              "x": 54.1,
+              "y": 26.65
+            },
+            {
+              "x": 62.4,
+              "y": 26.65
+            },
+            {
+              "x": 67.0,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 2.1,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_run",
+          "actor_id": "ball",
+          "kind": "ball_run",
+          "points": [
+            {
+              "x": 54.1,
+              "y": 26.65
+            },
+            {
+              "x": 62.4,
+              "y": 26.65
+            },
+            {
+              "x": 67.0,
+              "y": 26.65
+            }
+          ],
+          "start": 1.0,
+          "duration": 1.9,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_fit",
+          "actor_id": "lb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 65.0,
+              "y": 26.9
+            },
+            {
+              "x": 66.6,
+              "y": 25.849999999999998
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_fit",
+          "actor_id": "cb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 64.6,
+              "y": 37.8
+            },
+            {
+              "x": 66.6,
+              "y": 25.849999999999998
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_fit",
+          "actor_id": "s_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 76.0,
+              "y": 22.8
+            },
+            {
+              "x": 66.6,
+              "y": 27.45
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 60.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 67.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 67.0,
+            "y": 26.65
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 900,
+          "down_text": "1 & 40",
+          "yards_remaining": 40,
+          "plays_left": 6
+        },
+        "play_banner": "Inside Zone vs Palms",
+        "result_banner": "Run",
+        "recipe": "inside_run_success",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "rush_success": 0.8112,
+            "evade": 0.59,
+            "explosive": 0.0611,
+            "fumble": 0.0034
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "pre_snap": {
+        "down": 2,
+        "distance": 33,
+        "yard_line": 67,
+        "plays_left": 5,
+        "line_of_scrimmage": 67.0,
+        "offensive_call": "Toss Crack",
+        "defensive_call": "Quarters Read",
+        "tell_text": "Light box; front stays even before the snap; safeties split high over a zone shell",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Run",
+        "yards_gained": 6,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "edge_run_success",
+        "next_down": 3,
+        "next_distance": 27,
+        "next_yard_line": 73
+      },
+      "beats": [
+        {
+          "id": "edge_run_success_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "edge_run_success_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "edge_run_success_resolve",
+          "kind": "edge_run_success",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        },
+        {
+          "id": "edge_run_success_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 62.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 59.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 66.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 66.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 66.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 66.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 66.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 68.1,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 68.1,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 72.0,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 71.6,
+            "y": 37.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 83.0,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 62.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 62.8,
+              "y": 26.65
+            },
+            {
+              "x": 60.699999999999996,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 68.1,
+              "y": 21.0
+            },
+            {
+              "x": 61.699999999999996,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 68.1,
+              "y": 32.8
+            },
+            {
+              "x": 61.699999999999996,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_handoff",
+          "actor_id": "ball",
+          "kind": "handoff",
+          "points": [
+            {
+              "x": 60.699999999999996,
+              "y": 26.65
+            },
+            {
+              "x": 61.1,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 0.35,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "rb_pp_1_run",
+          "actor_id": "rb_pp_1",
+          "kind": "run_lane",
+          "points": [
+            {
+              "x": 59.7,
+              "y": 26.65
+            },
+            {
+              "x": 61.1,
+              "y": 26.65
+            },
+            {
+              "x": 69.4,
+              "y": 18.0
+            },
+            {
+              "x": 73.0,
+              "y": 18.0
+            }
+          ],
+          "start": 0.85,
+          "duration": 2.1,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_run",
+          "actor_id": "ball",
+          "kind": "ball_run",
+          "points": [
+            {
+              "x": 61.1,
+              "y": 26.65
+            },
+            {
+              "x": 69.4,
+              "y": 18.0
+            },
+            {
+              "x": 73.0,
+              "y": 18.0
+            }
+          ],
+          "start": 1.0,
+          "duration": 1.9,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_fit",
+          "actor_id": "lb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 72.0,
+              "y": 26.9
+            },
+            {
+              "x": 72.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_fit",
+          "actor_id": "cb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 71.6,
+              "y": 37.8
+            },
+            {
+              "x": 72.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_fit",
+          "actor_id": "s_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 83.0,
+              "y": 22.8
+            },
+            {
+              "x": 72.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 67.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 73.0,
+            "y": 18.0
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 73.0,
+            "y": 18.0
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 863,
+          "down_text": "2 & 33",
+          "yards_remaining": 33,
+          "plays_left": 5
+        },
+        "play_banner": "Toss Crack vs Quarters Read",
+        "result_banner": "Run",
+        "recipe": "edge_run_success",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "rush_success": 0.7348,
+            "evade": 0.6752,
+            "explosive": 0.0495,
+            "fumble": 0.0034
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "pre_snap": {
+        "down": 3,
+        "distance": 27,
+        "yard_line": 73,
+        "plays_left": 4,
+        "line_of_scrimmage": 73.0,
+        "offensive_call": "Shot Post",
+        "defensive_call": "Cover 2 Sink",
+        "tell_text": "Light box; front stays even before the snap; safeties split high over a zone shell",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Incompletion",
+        "yards_gained": 0,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "deep_incomplete",
+        "next_down": 4,
+        "next_distance": 27,
+        "next_yard_line": 73
+      },
+      "beats": [
+        {
+          "id": "deep_incomplete_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "deep_incomplete_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "deep_incomplete_resolve",
+          "kind": "deep_incomplete",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Incompletion"
+        },
+        {
+          "id": "deep_incomplete_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Incompletion"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 68.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 65.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 72.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 72.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 72.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 72.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 72.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 74.1,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 74.1,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 78.0,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 77.6,
+            "y": 20.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 89.0,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 68.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 68.8,
+              "y": 26.65
+            },
+            {
+              "x": 66.7,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 74.1,
+              "y": 21.0
+            },
+            {
+              "x": 67.7,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 74.1,
+              "y": 32.8
+            },
+            {
+              "x": 67.7,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "wr_pp_1_route",
+          "actor_id": "wr_pp_1",
+          "kind": "route",
+          "points": [
+            {
+              "x": 72.5,
+              "y": 8.5
+            },
+            {
+              "x": 93.0,
+              "y": 20.8
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.4,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_coverage",
+          "actor_id": "lb_lbz_1",
+          "kind": "hook_drop",
+          "points": [
+            {
+              "x": 78.0,
+              "y": 26.9
+            },
+            {
+              "x": 91.6,
+              "y": 19.6
+            }
+          ],
+          "start": 1.2,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_coverage",
+          "actor_id": "cb_lbz_1",
+          "kind": "coverage",
+          "points": [
+            {
+              "x": 77.6,
+              "y": 20.8
+            },
+            {
+              "x": 91.6,
+              "y": 19.6
+            }
+          ],
+          "start": 0.9,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_coverage",
+          "actor_id": "s_lbz_1",
+          "kind": "coverage",
+          "points": [
+            {
+              "x": 89.0,
+              "y": 22.8
+            },
+            {
+              "x": 91.6,
+              "y": 19.6
+            }
+          ],
+          "start": 1.2,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_flight",
+          "actor_id": "ball",
+          "kind": "ball_flight",
+          "points": [
+            {
+              "x": 66.7,
+              "y": 26.65
+            },
+            {
+              "x": 93.0,
+              "y": 20.8
+            }
+          ],
+          "start": 1.6,
+          "duration": 0.85,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 73.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "wr_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "wr_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 93.0,
+            "y": 20.8
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 93.0,
+            "y": 20.8
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 834,
+          "down_text": "3 & 27",
+          "yards_remaining": 27,
+          "plays_left": 4
+        },
+        "play_banner": "Shot Post vs Cover 2 Sink",
+        "result_banner": "Incompletion",
+        "recipe": "deep_incomplete",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "sack": 0.0145,
+            "interception": 0.0607,
+            "completion": 0.2121,
+            "explosive": 0.0
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "pre_snap": {
+        "down": 4,
+        "distance": 27,
+        "yard_line": 73,
+        "plays_left": 3,
+        "line_of_scrimmage": 73.0,
+        "offensive_call": "Inside Zone",
+        "defensive_call": "Cover 2 Sink",
+        "tell_text": "Light box; front stays even before the snap; safeties split high over a zone shell",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Run",
+        "yards_gained": 3,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "inside_run_success",
+        "next_down": 5,
+        "next_distance": 24,
+        "next_yard_line": 76
+      },
+      "beats": [
+        {
+          "id": "inside_run_success_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "inside_run_success_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "inside_run_success_resolve",
+          "kind": "inside_run_success",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        },
+        {
+          "id": "inside_run_success_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 68.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 65.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 72.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 72.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 72.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 72.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 72.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 74.1,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 74.1,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 78.0,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 77.6,
+            "y": 37.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 89.0,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 68.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 68.8,
+              "y": 26.65
+            },
+            {
+              "x": 66.7,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 74.1,
+              "y": 21.0
+            },
+            {
+              "x": 67.7,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 74.1,
+              "y": 32.8
+            },
+            {
+              "x": 67.7,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_handoff",
+          "actor_id": "ball",
+          "kind": "handoff",
+          "points": [
+            {
+              "x": 66.7,
+              "y": 26.65
+            },
+            {
+              "x": 67.10000000000001,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 0.35,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "rb_pp_1_run",
+          "actor_id": "rb_pp_1",
+          "kind": "run_lane",
+          "points": [
+            {
+              "x": 65.7,
+              "y": 26.65
+            },
+            {
+              "x": 67.10000000000001,
+              "y": 26.65
+            },
+            {
+              "x": 75.4,
+              "y": 26.65
+            },
+            {
+              "x": 76.0,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 2.1,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_run",
+          "actor_id": "ball",
+          "kind": "ball_run",
+          "points": [
+            {
+              "x": 67.10000000000001,
+              "y": 26.65
+            },
+            {
+              "x": 75.4,
+              "y": 26.65
+            },
+            {
+              "x": 76.0,
+              "y": 26.65
+            }
+          ],
+          "start": 1.0,
+          "duration": 1.9,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_fit",
+          "actor_id": "lb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 78.0,
+              "y": 26.9
+            },
+            {
+              "x": 75.6,
+              "y": 25.849999999999998
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_fit",
+          "actor_id": "cb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 77.6,
+              "y": 37.8
+            },
+            {
+              "x": 75.6,
+              "y": 25.849999999999998
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_fit",
+          "actor_id": "s_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 89.0,
+              "y": 22.8
+            },
+            {
+              "x": 75.6,
+              "y": 27.45
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 73.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 76.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 76.0,
+            "y": 26.65
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 828,
+          "down_text": "4 & 27",
+          "yards_remaining": 27,
+          "plays_left": 3
+        },
+        "play_banner": "Inside Zone vs Cover 2 Sink",
+        "result_banner": "Run",
+        "recipe": "inside_run_success",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "rush_success": 0.5838,
+            "evade": 0.2795,
+            "explosive": 0.0355,
+            "fumble": 0.0034
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "pre_snap": {
+        "down": 5,
+        "distance": 24,
+        "yard_line": 76,
+        "plays_left": 2,
+        "line_of_scrimmage": 76.0,
+        "offensive_call": "Toss Crack",
+        "defensive_call": "Zone Dog",
+        "tell_text": "Packed box; pressure threats walked toward the line; secondary rotates late after the snap",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Run",
+        "yards_gained": 6,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "edge_run_success",
+        "next_down": 6,
+        "next_distance": 18,
+        "next_yard_line": 82
+      },
+      "beats": [
+        {
+          "id": "edge_run_success_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "edge_run_success_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "edge_run_success_resolve",
+          "kind": "edge_run_success",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        },
+        {
+          "id": "edge_run_success_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Run"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 71.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 68.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 75.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 75.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 75.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 75.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 75.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 77.6,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 77.6,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 78.7,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 80.6,
+            "y": 37.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 90.8,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 71.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 71.8,
+              "y": 26.65
+            },
+            {
+              "x": 69.7,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 77.6,
+              "y": 21.0
+            },
+            {
+              "x": 70.7,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 77.6,
+              "y": 32.8
+            },
+            {
+              "x": 70.7,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_handoff",
+          "actor_id": "ball",
+          "kind": "handoff",
+          "points": [
+            {
+              "x": 69.7,
+              "y": 26.65
+            },
+            {
+              "x": 70.10000000000001,
+              "y": 26.65
+            }
+          ],
+          "start": 0.85,
+          "duration": 0.35,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "rb_pp_1_run",
+          "actor_id": "rb_pp_1",
+          "kind": "run_lane",
+          "points": [
+            {
+              "x": 68.7,
+              "y": 26.65
+            },
+            {
+              "x": 70.10000000000001,
+              "y": 26.65
+            },
+            {
+              "x": 78.4,
+              "y": 18.0
+            },
+            {
+              "x": 82.0,
+              "y": 18.0
+            }
+          ],
+          "start": 0.85,
+          "duration": 2.1,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_run",
+          "actor_id": "ball",
+          "kind": "ball_run",
+          "points": [
+            {
+              "x": 70.10000000000001,
+              "y": 26.65
+            },
+            {
+              "x": 78.4,
+              "y": 18.0
+            },
+            {
+              "x": 82.0,
+              "y": 18.0
+            }
+          ],
+          "start": 1.0,
+          "duration": 1.9,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_fit",
+          "actor_id": "lb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 78.7,
+              "y": 26.9
+            },
+            {
+              "x": 81.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_fit",
+          "actor_id": "cb_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 80.6,
+              "y": 37.8
+            },
+            {
+              "x": 81.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_fit",
+          "actor_id": "s_lbz_1",
+          "kind": "pursuit",
+          "points": [
+            {
+              "x": 90.8,
+              "y": 22.8
+            },
+            {
+              "x": 81.6,
+              "y": 17.2
+            }
+          ],
+          "start": 1.4,
+          "duration": 1.3,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 76.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "rb_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 82.0,
+            "y": 18.0
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 82.0,
+            "y": 18.0
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 800,
+          "down_text": "5 & 24",
+          "yards_remaining": 24,
+          "plays_left": 2
+        },
+        "play_banner": "Toss Crack vs Zone Dog",
+        "result_banner": "Run",
+        "recipe": "edge_run_success",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "rush_success": 0.594,
+            "evade": 0.3702,
+            "explosive": 0.0376,
+            "fumble": 0.0034
+          }
+        }
+      }
+    },
+    {
+      "index": 5,
+      "pre_snap": {
+        "down": 6,
+        "distance": 18,
+        "yard_line": 82,
+        "plays_left": 1,
+        "line_of_scrimmage": 82.0,
+        "offensive_call": "Shot Post",
+        "defensive_call": "Palms",
+        "tell_text": "Light box; front stays even before the snap; safeties split high over a zone shell",
+        "round_tell": "Soft two-high shell with linebackers sitting off the ball."
+      },
+      "outcome": {
+        "summary": "Incompletion",
+        "yards_gained": 0,
+        "touchdown": false,
+        "turnover": false,
+        "complete": false,
+        "sack": false,
+        "interception": false,
+        "fumble": false,
+        "explosive": false,
+        "recipe": "deep_incomplete",
+        "next_down": 7,
+        "next_distance": 18,
+        "next_yard_line": 82
+      },
+      "beats": [
+        {
+          "id": "deep_incomplete_presnap",
+          "kind": "pre_snap_hold",
+          "start": 0.0,
+          "duration": 0.8,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "deep_incomplete_snap",
+          "kind": "snap_release",
+          "start": 0.8,
+          "duration": 1.0,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": ""
+        },
+        {
+          "id": "deep_incomplete_resolve",
+          "kind": "deep_incomplete",
+          "start": 1.8,
+          "duration": 1.6,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Incompletion"
+        },
+        {
+          "id": "deep_incomplete_finish",
+          "kind": "finish",
+          "start": 3.4,
+          "duration": 0.9,
+          "actor_ids": [
+            "qb_pp_1",
+            "rb_pp_1",
+            "wr_pp_1",
+            "wr_pp_2",
+            "te_pp_1",
+            "ol_pp_1",
+            "ol_pp_5",
+            "edge_lbz_1",
+            "edge_lbz_2",
+            "lb_lbz_1",
+            "cb_lbz_1",
+            "s_lbz_1",
+            "ball"
+          ],
+          "path_ids": [],
+          "banner_text": "Incompletion"
+        }
+      ],
+      "actors": [
+        {
+          "id": "qb_pp_1",
+          "team_side": "offense",
+          "role": "qb",
+          "label": "Micah Vale",
+          "sprite_archetype_key": "toy_qb",
+          "start_slot": "qb",
+          "start_position": {
+            "x": 77.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.0
+        },
+        {
+          "id": "rb_pp_1",
+          "team_side": "offense",
+          "role": "ball_carrier",
+          "label": "Trey Rivers",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "rb",
+          "start_position": {
+            "x": 74.7,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.98
+        },
+        {
+          "id": "wr_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Nico Hart",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_left",
+          "start_position": {
+            "x": 81.5,
+            "y": 8.5
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "wr_pp_2",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Evan Pike",
+          "sprite_archetype_key": "toy_skill",
+          "start_slot": "wr_right",
+          "start_position": {
+            "x": 81.5,
+            "y": 44.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 0.96
+        },
+        {
+          "id": "te_pp_1",
+          "team_side": "offense",
+          "role": "receiver",
+          "label": "Jonah Cross",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "te_right",
+          "start_position": {
+            "x": 81.4,
+            "y": 34.0
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.02
+        },
+        {
+          "id": "ol_pp_1",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "LT Boone",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_left",
+          "start_position": {
+            "x": 81.6,
+            "y": 21.8
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "ol_pp_5",
+          "team_side": "offense",
+          "role": "lineman",
+          "label": "RT Flynn",
+          "sprite_archetype_key": "toy_heavy",
+          "start_slot": "ol_right",
+          "start_position": {
+            "x": 81.6,
+            "y": 31.6
+          },
+          "palette_tokens": {
+            "primary": "#204E78",
+            "secondary": "#E0F2FE",
+            "accent": "#F6AE2D",
+            "outline": "#0B132B"
+          },
+          "facing": "right",
+          "scale": 1.08
+        },
+        {
+          "id": "edge_lbz_1",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Rory Pike",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_left",
+          "start_position": {
+            "x": 83.1,
+            "y": 21.0
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "edge_lbz_2",
+          "team_side": "defense",
+          "role": "edge",
+          "label": "Vince Sato",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_edge_right",
+          "start_position": {
+            "x": 83.1,
+            "y": 32.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.03
+        },
+        {
+          "id": "lb_lbz_1",
+          "team_side": "defense",
+          "role": "linebacker",
+          "label": "Omar Wynn",
+          "sprite_archetype_key": "toy_front_seven",
+          "start_slot": "def_lb",
+          "start_position": {
+            "x": 87.0,
+            "y": 26.9
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 1.0
+        },
+        {
+          "id": "cb_lbz_1",
+          "team_side": "defense",
+          "role": "corner",
+          "label": "Troy Vale",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_cb",
+          "start_position": {
+            "x": 86.6,
+            "y": 20.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.94
+        },
+        {
+          "id": "s_lbz_1",
+          "team_side": "defense",
+          "role": "safety",
+          "label": "Cole Denton",
+          "sprite_archetype_key": "toy_db",
+          "start_slot": "def_safety",
+          "start_position": {
+            "x": 98.0,
+            "y": 22.8
+          },
+          "palette_tokens": {
+            "primary": "#355070",
+            "secondary": "#F7F7FF",
+            "accent": "#B56576",
+            "outline": "#1D1E2C"
+          },
+          "facing": "left",
+          "scale": 0.95
+        },
+        {
+          "id": "ball",
+          "team_side": "neutral",
+          "role": "ball",
+          "label": "Ball",
+          "sprite_archetype_key": "football",
+          "start_slot": "ball",
+          "start_position": {
+            "x": 77.8,
+            "y": 26.65
+          },
+          "palette_tokens": {
+            "primary": "#8D5524",
+            "secondary": "#F8E9D2",
+            "accent": "#F8E9D2",
+            "outline": "#3E2723"
+          },
+          "facing": "right",
+          "scale": 0.55
+        }
+      ],
+      "paths": [
+        {
+          "id": "qb_pp_1_drop",
+          "actor_id": "qb_pp_1",
+          "kind": "dropback",
+          "points": [
+            {
+              "x": 77.8,
+              "y": 26.65
+            },
+            {
+              "x": 75.7,
+              "y": 26.65
+            }
+          ],
+          "start": 0.8,
+          "duration": 0.7,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_1_rush",
+          "actor_id": "edge_lbz_1",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 83.1,
+              "y": 21.0
+            },
+            {
+              "x": 76.7,
+              "y": 29.049999999999997
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "edge_lbz_2_rush",
+          "actor_id": "edge_lbz_2",
+          "kind": "rush_arc",
+          "points": [
+            {
+              "x": 83.1,
+              "y": 32.8
+            },
+            {
+              "x": 76.7,
+              "y": 24.25
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.0,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "wr_pp_1_route",
+          "actor_id": "wr_pp_1",
+          "kind": "route",
+          "points": [
+            {
+              "x": 81.5,
+              "y": 8.5
+            },
+            {
+              "x": 100.0,
+              "y": 20.8
+            }
+          ],
+          "start": 0.8,
+          "duration": 1.4,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "lb_lbz_1_coverage",
+          "actor_id": "lb_lbz_1",
+          "kind": "hook_drop",
+          "points": [
+            {
+              "x": 87.0,
+              "y": 26.9
+            },
+            {
+              "x": 98.6,
+              "y": 19.6
+            }
+          ],
+          "start": 1.2,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "cb_lbz_1_coverage",
+          "actor_id": "cb_lbz_1",
+          "kind": "coverage",
+          "points": [
+            {
+              "x": 86.6,
+              "y": 20.8
+            },
+            {
+              "x": 98.6,
+              "y": 19.6
+            }
+          ],
+          "start": 0.9,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "s_lbz_1_coverage",
+          "actor_id": "s_lbz_1",
+          "kind": "coverage",
+          "points": [
+            {
+              "x": 98.0,
+              "y": 22.8
+            },
+            {
+              "x": 98.6,
+              "y": 19.6
+            }
+          ],
+          "start": 1.2,
+          "duration": 1.5,
+          "easing": "sine_in_out"
+        },
+        {
+          "id": "ball_flight",
+          "actor_id": "ball",
+          "kind": "ball_flight",
+          "points": [
+            {
+              "x": 75.7,
+              "y": 26.65
+            },
+            {
+              "x": 100.0,
+              "y": 20.8
+            }
+          ],
+          "start": 1.6,
+          "duration": 0.85,
+          "easing": "sine_in_out"
+        }
+      ],
+      "camera": [
+        {
+          "start": 0.0,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.92,
+          "pan_target": {
+            "x": 82.0,
+            "y": 26.65
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 0.8,
+          "duration": 1.2,
+          "focus_target": "wr_pp_1",
+          "zoom": 1.02,
+          "pan_target": null,
+          "hold": 0.0
+        },
+        {
+          "start": 2.0,
+          "duration": 1.6,
+          "focus_target": "wr_pp_1",
+          "zoom": 1.1,
+          "pan_target": {
+            "x": 100.0,
+            "y": 20.8
+          },
+          "hold": 0.0
+        },
+        {
+          "start": 3.6,
+          "duration": 0.8,
+          "focus_target": "line_of_scrimmage",
+          "zoom": 0.98,
+          "pan_target": {
+            "x": 100.0,
+            "y": 20.8
+          },
+          "hold": 0.2
+        }
+      ],
+      "ui": {
+        "scoreboard": {
+          "quarter": 1,
+          "clock_seconds": 768,
+          "down_text": "6 & 18",
+          "yards_remaining": 18,
+          "plays_left": 1
+        },
+        "play_banner": "Shot Post vs Palms",
+        "result_banner": "Incompletion",
+        "recipe": "deep_incomplete",
+        "debug_panel": {
+          "visible_by_default": false,
+          "probabilities": {
+            "sack": 0.0076,
+            "interception": 0.0758,
+            "completion": 0.1444,
+            "explosive": 0.0
+          }
+        }
+      }
+    }
+  ]
+}
